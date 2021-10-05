@@ -12,9 +12,6 @@ export default defineComponent({
   components: {
     HelloWorld
   }
-
-
-
 });
 </script>
 
@@ -26,5 +23,6 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  cursor: pointer;
 }
 </style>
