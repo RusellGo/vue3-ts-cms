@@ -10,9 +10,10 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "axios": "^0.22.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-plus": "^1.1.0-beta.19",
+    "normalize.css": "^8.0.1",
     "unplugin-vue-components": "^0.15.6",
     "vue": "^3.0.0",
     "vue-router": "^4.0.11",
