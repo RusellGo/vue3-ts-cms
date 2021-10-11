@@ -8,6 +8,17 @@ module.exports = {
   outputDir: './build',
   // 解决打包后文件路径问题
   publicPath: './',
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://152.136.185.210:5000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    }
+  },
   // 配置方式二：和 webpack 属性完全一致，最后会进行合并
   // configureWebpack: {
   //   resolve: {

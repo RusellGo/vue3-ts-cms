@@ -39,7 +39,6 @@ class RLRequest {
     // 所有实例都有的拦截器
     this.isntance.interceptors.request.use(
       (config) => {
-        console.log('所有实例：请求成功拦截');
         // 发送请求时 给定全局loading
         if (this.showLoading) {
           this.loading = ElLoading.service({
@@ -51,30 +50,25 @@ class RLRequest {
         return config;
       },
       (err) => {
-        console.log('所有实例：请求失败拦截');
         return err;
       }
     );
 
     this.isntance.interceptors.response.use(
       (res) => {
-        console.log('所有实例：响应成功拦截');
-
         // 将 loading 移除
         this.loading?.close();
 
         const data = res.data;
-        // if (data.returnCode === '-1001') {
+        // 根据返回码 显示错误信息
+        // if (data.code === '-1001') {
         //   console.log('请求错误');
         // } else {
         //   return data;
         // }
-
         return data;
       },
       (err) => {
-        console.log('所有实例：响应失败拦截');
-
         // 将 loading 移除
         this.loading?.close();
 

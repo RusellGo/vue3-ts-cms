@@ -1,6 +1,6 @@
 // 编写LoginAccount的校验规则
 export const rules = {
-  uname: [
+  name: [
     { required: true, message: '请输入用户名~', trigger: 'blur' },
     {
       pattern: /^[a-zA-Z0-9]{5,10}$/,

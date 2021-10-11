@@ -8,8 +8,8 @@
       status-icon
     >
       <!-- prop 属性用于校验规则找到对应的目标 -->
-      <el-form-item label="账号" prop="phoneNumber">
-        <el-input v-model="phone.phoneNumber" maxlength="13" />
+      <el-form-item label="手机号" prop="phoneNumber">
+        <el-input v-model="phone.phoneNumber" minlength="11" maxlength="11" />
       </el-form-item>
 
       <el-form-item label="验证码" prop="verificationCode">
@@ -23,26 +23,40 @@
 </template>
 
 <script lang="ts">
-import { ElForm } from 'element-plus';
 import { defineComponent, reactive, ref } from 'vue';
+import store from '@/store';
 
+import { ElForm } from 'element-plus';
 // 导入编写好的校验规则
 import { rules } from '../config/phone-config';
+// 缓存 工具函数
+import localCache from '@/utils/cache';
 
 export default defineComponent({
   name: 'LoginPhone',
   setup() {
+    // 表单数据
     const phone = reactive({
-      phoneNum: '',
+      phoneNumber: localCache.getCache('phoneNumber') ?? '',
       verificationCode: ''
     });
 
+    // 获取表单实例
     const phoneForm = ref<InstanceType<typeof ElForm>>();
 
-    const loginByPhone = () => {
+    // 该组件的登录函数
+    const loginByPhone = (iskeepPassword: boolean) => {
+      // 校验是否通过
       phoneForm.value?.validate((valid) => {
         if (valid) {
-          console.log('登录逻辑');
+          // 是否记住账号
+          if (iskeepPassword) {
+            localCache.setCache('phoneNumber', phone.phoneNumber);
+          } else {
+            localCache.deleteCache('phoneNumber');
+          }
+
+          store.dispatch('loginModule/phoneLoginAction', { ...phone });
         }
       });
     };

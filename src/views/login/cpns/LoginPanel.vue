@@ -2,15 +2,15 @@
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
     <!-- tabs 面板 -->
-    <el-tabs type="border-card" stretch>
-      <el-tab-pane>
+    <el-tabs type="border-card" v-model="currentTab" stretch>
+      <el-tab-pane name="account">
         <template #label>
           <span><i class="el-icon-user-solid"></i> 账号登录</span>
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
 
-      <el-tab-pane>
+      <el-tab-pane name="phone">
         <template #label>
           <span><i class="el-icon-mobile-phone"></i> 手机登录</span>
         </template>
@@ -46,20 +46,29 @@ export default defineComponent({
     // 是否记住密码
     const iskeepPassword = ref(true);
 
-    // 获取子组件实例
-    // 泛型获取的是子组件实例的类型
+    // 获取子组件实例（最终使用的是子组件对象）
+    // 泛型规定的是子组件实例的类型
     const accountRef = ref<InstanceType<typeof LoginAccount>>();
     const phoneRef = ref<InstanceType<typeof LoginPhone>>();
 
+    // 记录 tabs 的选择
+    const currentTab = ref('account');
+
     // 此处会调用子组件的登录函数
     const loginHandleClick = () => {
-      accountRef.value?.loginByAccount();
+      // tabs 切换时选择登录方式
+      if (currentTab.value === 'account') {
+        accountRef.value?.loginByAccount(iskeepPassword.value);
+      } else if (currentTab.value === 'phone') {
+        phoneRef.value?.loginByPhone(iskeepPassword.value);
+      }
     };
 
     return {
       iskeepPassword,
       accountRef,
       phoneRef,
+      currentTab,
       loginHandleClick
     };
   }

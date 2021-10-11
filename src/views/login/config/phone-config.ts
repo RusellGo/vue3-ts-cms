@@ -1,7 +1,7 @@
 // 编写LoginPhone的校验规则
 export const rules = {
   phoneNumber: [
-    { required: true, message: '请输入手机号~', trriger: 'blur' },
+    { required: true, message: '请输入手机号~', trigger: 'blur' },
     {
       pattern:
         /^1(3[0-9]|4[01456789]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
