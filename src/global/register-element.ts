@@ -6,6 +6,7 @@ import {
   ElForm,
   ElFormItem,
   ElAlert,
+  ElIcon,
   ElTabs,
   ElTabPane,
   ElInput,
@@ -18,7 +19,16 @@ import {
   ElMenu,
   ElMenuItem,
   ElMenuItemGroup,
-  ElSubMenu
+  ElSubMenu,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElDatePicker,
+  ElOption
 } from 'element-plus';
 
 const components = [
@@ -26,6 +36,7 @@ const components = [
   ElForm,
   ElFormItem,
   ElAlert,
+  ElIcon,
   ElTabs,
   ElTabPane,
   ElInput,
@@ -38,7 +49,16 @@ const components = [
   ElMenu,
   ElMenuItem,
   ElMenuItemGroup,
-  ElSubMenu
+  ElSubMenu,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElOption,
+  ElDatePicker
 ];
 
 export default function (app: App): void {

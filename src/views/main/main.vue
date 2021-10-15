@@ -9,7 +9,11 @@
         <el-header class="page-header">
           <nav-header @changeFold="changeMenuFold" />
         </el-header>
-        <el-main class="page-content">Main</el-main>
+        <el-main class="page-content">
+          <div class="page-view">
+            <router-view></router-view>
+          </div>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -18,8 +22,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
-import { NavMenu } from '@/components/nav-menu';
-import { NavHeader } from '@/components/nav-header';
+import NavMenu from '@/components/nav-menu';
+import NavHeader from '@/components/nav-header';
 
 export default defineComponent({
   name: 'Main',
@@ -58,6 +62,10 @@ export default defineComponent({
 
 .page-content {
   height: calc(100% - 48px);
+
+  .page-view {
+    background-color: #fff;
+  }
 }
 
 .el-header,

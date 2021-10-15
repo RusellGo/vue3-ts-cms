@@ -17,6 +17,7 @@ import {
 
 // 缓存 工具函数
 import localCache from '@/utils/cache';
+import { mapMenusToRoutes } from '@/utils/mapMenus';
 
 // 定义 loginModule
 // Module 类型要传入两个泛型类型 <S(当前模块state的类型), R(根模块的类型)>
@@ -39,6 +40,13 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus;
+
+      // 得到菜单对应路由
+      const routes = mapMenusToRoutes(userMenus);
+
+      // 将路由对象添加到 router.main.children
+      routes.forEach((route) => router.addRoute('main', route));
+      // router.options.routes[2].children = routes;
     }
   },
   actions: {

@@ -1,3 +1,3 @@
 import NavHeader from './src/NavHeader.vue';
 
-export { NavHeader };
+export default NavHeader;
