@@ -83,7 +83,7 @@ class RLRequest {
 
   // 封装的请求方法
   // 单独的请求也可以传入拦截器
-  request<T>(config: RLRequestConfig<T>): Promise<T> {
+  request<T = any>(config: RLRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 1.单个请求是否有拦截器
       if (config.interceptors?.requestInterceptor) {
@@ -117,19 +117,19 @@ class RLRequest {
     });
   }
 
-  get<T>(config: RLRequestConfig<T>): Promise<T> {
+  get<T = any>(config: RLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' });
   }
 
-  post<T>(config: RLRequestConfig<T>): Promise<T> {
+  post<T = any>(config: RLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' });
   }
 
-  delete<T>(config: RLRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: RLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' });
   }
 
-  patch<T>(config: RLRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: RLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' });
   }
 }

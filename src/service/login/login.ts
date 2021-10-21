@@ -1,7 +1,8 @@
 // 导入创建好的 axios 实例
 import { rlRequest } from '../index';
 // 限制参数类型
-import { IAccountInfo, ILoginResult, IDataType } from './types';
+import { IAccountInfo, ILoginResult } from './types';
+import { IDataType } from '../types';
 
 enum LoginAPI {
   AccountLogin = '/login',

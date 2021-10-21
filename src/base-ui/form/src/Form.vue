@@ -1,5 +1,9 @@
 <template>
   <div class="ru-form">
+    <div class="searchHeader">
+      <slot name="searchHeader"></slot>
+    </div>
+
     <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
@@ -16,14 +20,18 @@
                   v-bind="item.otherOptions"
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
+                  v-model="formData[`${item.field}`]"
                   style="width: 100%"
+                  size="medium"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
                   v-bind="item.otherOptions"
                   :placeholder="item.placeholder"
+                  v-model="formData[`${item.field}`]"
                   style="width: 100%"
+                  size="medium"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -36,7 +44,9 @@
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
                   v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
                   style="width: 100%"
+                  size="medium"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -44,19 +54,27 @@
         </template>
       </el-row>
     </el-form>
+
+    <div class="searchFooter">
+      <slot name="searchFooter"></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { IFormItem } from '../types';
+import { defineComponent, PropType, ref, watch } from 'vue';
+import type { IFormItem } from '../types';
 
 export default defineComponent({
   name: 'Form',
   props: {
+    modelValue: {
+      type: Object,
+      default: () => ({})
+    },
     formItems: {
       type: Array as PropType<IFormItem[]>,
-      default: () => []
+      required: true
     },
     labelWidth: {
       type: String,
@@ -77,8 +95,16 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {};
+  setup(props, context) {
+    const formData = ref({ ...props.modelValue });
+
+    watch(formData, (newValue) => context.emit('update:modelValue', newValue), {
+      deep: true
+    });
+
+    return {
+      formData
+    };
   }
 });
 </script>

@@ -17,8 +17,8 @@ const app = createApp(App);
 // 按需引入组件
 registerApp(app);
 
-app.use(router);
 app.use(store);
 setupStore();
+app.use(router);
 
 app.mount('#app');

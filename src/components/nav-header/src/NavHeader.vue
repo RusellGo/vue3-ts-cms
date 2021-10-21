@@ -7,22 +7,32 @@
     ></i>
 
     <div class="content">
-      <div>面包屑</div>
+      <div>
+        <ru-breadcrumb :breadcrumbs="breadcrumbs" />
+      </div>
       <div class="user-info">
-        <user-info></user-info>
+        <user-info />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from '@/store';
+
 import UserInfo from './cpns/UserInfo.vue';
+import RuBreadcrumb from '@/base-ui/breadcrumb';
+
+// 工具函数 获取面包屑数据
+import { pathMapBreadcrumbs } from '@/utils/mapMenus';
 
 export default defineComponent({
   name: 'NavaHeader',
   components: {
-    UserInfo
+    UserInfo,
+    RuBreadcrumb
   },
   setup(props, context) {
     const isFold = ref(false);
@@ -32,8 +42,23 @@ export default defineComponent({
       context.emit('changeFold', isFold.value);
     };
 
+    // 面包屑数据 [{name: '', path: ''}]
+    const breadcrumbs = computed(() => {
+      // 获取用户菜单
+      const store = useStore();
+      const userMenus = store.state.loginModule.userMenus;
+
+      // 获取当前路径
+      const route = useRoute();
+      const currentPath = route.path;
+
+      // 返回面包屑数据
+      return pathMapBreadcrumbs(userMenus, currentPath);
+    });
+
     return {
       isFold,
+      breadcrumbs,
       foldClick
     };
   },

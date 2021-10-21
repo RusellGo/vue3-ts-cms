@@ -1,10 +1,11 @@
 import { createStore, Store, useStore as useVuexStore } from 'vuex';
 
 // 导入 createStore 泛型类型
-import { IRootState, IStoreType } from './types';
+import type { IRootState, IStoreType } from './types';
 
 // 导入 Modules
 import loginModule from './login/login';
+import systemModule from './main/system/system';
 
 // 使用 TypeScript 最好为 createStore 添加类型
 const store = createStore<IRootState>({
@@ -17,7 +18,8 @@ const store = createStore<IRootState>({
   mutations: {},
   actions: {},
   modules: {
-    loginModule
+    loginModule,
+    systemModule
   }
 });
 

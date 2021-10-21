@@ -6,7 +6,7 @@
     </div>
 
     <el-menu
-      default-active="2"
+      :default-active="defaultActive"
       class="el-menu-vertical"
       background-color="#0c2135"
       :collapse="isCollapse"
@@ -54,9 +54,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useStore } from '@/store/index';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+
+// 工具函数
+import { pathMapToMenu } from '@/utils/mapMenus';
 
 export default defineComponent({
   name: 'NavMenu',
@@ -67,10 +70,18 @@ export default defineComponent({
     }
   },
   setup() {
+    // store
     const store = useStore();
     const userMenus = computed(() => store.state.loginModule.userMenus);
 
+    // router
     const router = useRouter();
+    const route = useRoute();
+    const currentPath = route.path;
+
+    // 获取当前路径的菜单对象
+    const currentMenu = pathMapToMenu(userMenus.value, currentPath);
+    const defaultActive = ref(currentMenu.id + '');
 
     const handleSubMenuRoute = (subMenu: any) => {
       router.push({
@@ -80,6 +91,7 @@ export default defineComponent({
 
     return {
       userMenus,
+      defaultActive,
       handleSubMenuRoute
     };
   }

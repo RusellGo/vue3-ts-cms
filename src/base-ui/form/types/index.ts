@@ -6,6 +6,7 @@ interface IFormOptions {
 }
 
 export interface IFormItem {
+  field: string;
   type: IFormType;
   label: string;
   rules?: any[];
