@@ -6,7 +6,13 @@
       </template>
       <template v-slot:searchFooter>
         <div class="search-footer">
-          <el-button icon="el-icon-refresh" size="small">重置</el-button>
+          <el-button
+            icon="el-icon-refresh"
+            size="small"
+            @click="handleResetClick"
+          >
+            重置
+          </el-button>
           <el-button type="primary" icon="el-icon-search" size="small">
             搜索
           </el-button>
@@ -32,17 +38,25 @@ export default defineComponent({
   components: {
     RuForm
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      choice: '',
-      createTime: ''
-    });
+  setup(props) {
+    // 双向绑定的数据应该由配置文件中的 field 属性决定
+    // 优化一：表单双向绑定根据配置文件决定
+    const formItems = props.searchFormConfig?.formItems ?? [];
+    const formOriginData: any = {};
+    for (const item of formItems) {
+      formOriginData[item.field] = '';
+    }
+    const formData = ref(formOriginData);
+
+    // 数据重置
+    const handleResetClick = () => {
+      formData.value = formOriginData;
+      console.log(formData.value);
+    };
 
     return {
-      formData
+      formData,
+      handleResetClick
     };
   }
 });

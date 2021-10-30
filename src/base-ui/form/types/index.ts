@@ -20,6 +20,6 @@ export interface IFormItem {
 export interface IForm {
   formItems: IFormItem[];
   labelWidth?: string;
-  itemStyle: any;
-  colLayout: any;
+  itemStyle?: any;
+  colLayout?: any;
 }

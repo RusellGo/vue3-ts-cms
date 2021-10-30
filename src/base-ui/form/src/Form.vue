@@ -87,7 +87,7 @@ export default defineComponent({
     colLayout: {
       type: Object,
       default: () => ({
-        xl: 6, // > 1920px 一列占6份 一行放4列
+        xl: 6, // > 1920px 一列占6份（24份） 一行放4列
         lg: 8,
         md: 12,
         sm: 24,
@@ -97,6 +97,12 @@ export default defineComponent({
   },
   setup(props, context) {
     const formData = ref({ ...props.modelValue });
+    // watch(
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     formData.value = newValue;
+    //   }
+    // );
 
     watch(formData, (newValue) => context.emit('update:modelValue', newValue), {
       deep: true
