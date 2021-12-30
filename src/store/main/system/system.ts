@@ -11,27 +11,39 @@ const systemModule: Module<ISystemState, IRootState> = {
       userList: [],
       userCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      goodList: [],
+      goodCount: 0,
+      menuList: [],
+      menuCount: 0
     };
   },
   getters: {
     pageListData(state) {
       return (pageName: string) => {
         switch (pageName) {
-          case 'user':
+          case 'users':
             return state.userList;
           case 'role':
             return state.roleList;
+          case 'goods':
+            return state.goodList;
+          case 'menu':
+            return state.menuList;
         }
       };
     },
-    pageCountData(state) {
+    pageListCount(state) {
       return (pageName: string) => {
         switch (pageName) {
-          case 'user':
+          case 'users':
             return state.userCount;
           case 'role':
             return state.roleCount;
+          case 'goods':
+            return state.goodCount;
+          case 'menu':
+            return state.menuCount;
         }
       };
     }
@@ -48,6 +60,18 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeRoleCount(state, roleCount: number) {
       state.roleCount = roleCount;
+    },
+    changeGoodList(state, goodList: any[]) {
+      state.goodList = goodList;
+    },
+    changeGoodCount(state, goodCount: number) {
+      state.goodCount = goodCount;
+    },
+    changeMenuList(state, menuList: any[]) {
+      state.menuList = menuList;
+    },
+    changeMenuCount(state, menuCount: number) {
+      state.menuCount = menuCount;
     }
   },
   actions: {
@@ -56,11 +80,17 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageName = payload.pageName;
 
       switch (pageName) {
-        case 'user':
+        case 'users':
           pageUrl = `/users/list`;
           break;
         case 'role':
           pageUrl = `/role/list`;
+          break;
+        case 'goods':
+          pageUrl = `/goods/list`;
+          break;
+        case 'menu':
+          pageUrl = `/menu/list`;
           break;
       }
 
@@ -68,13 +98,21 @@ const systemModule: Module<ISystemState, IRootState> = {
       console.log(pageRuselt);
       const { list, totalCount } = pageRuselt.data;
       switch (pageName) {
-        case 'user':
+        case 'users':
           context.commit('changeUserList', list);
           context.commit('changeUserCount', totalCount);
           break;
         case 'role':
           context.commit('changeRoleList', list);
           context.commit('changeRoleCount', totalCount);
+          break;
+        case 'goods':
+          context.commit('changeGoodList', list);
+          context.commit('changeGoodCount', totalCount);
+          break;
+        case 'menu':
+          context.commit('changeMenuList', list);
+          context.commit('changeMenuCount', totalCount);
           break;
       }
     }

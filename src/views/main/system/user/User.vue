@@ -1,11 +1,19 @@
 <template>
   <div class="user">
     <div class="serch">
-      <page-search :searchFormConfig="searchFormConfig" />
+      <page-search
+        :searchFormConfig="searchFormConfig"
+        @resetBtnClick="handleReset"
+        @queryBtnClick="handleQuery"
+      />
     </div>
 
     <div class="content">
-      <page-content :contentTableConfig="contentTableConfig" pageName="user" />
+      <page-content
+        ref="pageContentRef"
+        :contentTableConfig="contentTableConfig"
+        pageName="users"
+      />
     </div>
   </div>
 </template>
@@ -19,6 +27,9 @@ import searchFormConfig from './config/search.config';
 import PageContent from '@/components/page-content';
 import contentTableConfig from './config/content.config';
 
+// 引入封装的搜索、重置 hook
+import { usePageSearch } from '@/hooks/usePageSearch';
+
 export default defineComponent({
   name: 'User',
   components: {
@@ -26,9 +37,15 @@ export default defineComponent({
     PageContent
   },
   setup() {
+    // 搜索、重置 hook
+    const [pageContentRef, handleReset, handleQuery] = usePageSearch();
+
     return {
       searchFormConfig,
-      contentTableConfig
+      contentTableConfig,
+      pageContentRef,
+      handleReset,
+      handleQuery
     };
   }
 });

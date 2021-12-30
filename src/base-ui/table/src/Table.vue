@@ -13,6 +13,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -33,6 +34,7 @@
           :label="propItem.label"
           :min-width="propItem.minWidth"
           align="center"
+          show-overflow-tooltip
         >
           <template v-slot:default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
@@ -42,16 +44,16 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
-          v-model:currentPage="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30, 50]"
+          :currentPage="page.currentPage"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          layout="total, sizes, prev, pager, next, jumper"
         >
         </el-pagination>
       </slot>
@@ -69,6 +71,10 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
     title: {
       type: String,
       default: ''
@@ -84,16 +90,39 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   setup(props, context) {
     const handleSelectionChange = (value: any) => {
       context.emit('selectionChange', value);
     };
 
+    // 分页器改变显示条数触发事件
+    const handleSizeChange = (pageSize: number) => {
+      context.emit('update:page', { ...props.page, pageSize });
+    };
+    // 分页器改变页数触发事件
+    const handleCurrentChange = (currentPage: number) => {
+      context.emit('update:page', { ...props.page, currentPage });
+    };
+
     return {
-      handleSelectionChange
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
     };
   }
 });

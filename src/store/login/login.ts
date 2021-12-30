@@ -17,7 +17,7 @@ import {
 
 // 缓存 工具函数
 import localCache from '@/utils/cache';
-import { mapMenusToRoutes } from '@/utils/mapMenus';
+import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/mapMenus';
 
 // 定义 loginModule
 // Module 类型要传入两个泛型类型 <S(当前模块state的类型), R(根模块的类型)>
@@ -27,7 +27,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      userPermissions: []
     };
   },
   getters: {},
@@ -47,6 +48,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 将路由对象添加到 router.main.children
       routes.forEach((route) => router.addRoute('main', route));
       // router.options.routes[2].children = routes;
+
+      // 获取用户按钮权限
+      const permissions = mapMenusToPermissions(userMenus);
+      state.userPermissions = permissions;
     }
   },
   actions: {

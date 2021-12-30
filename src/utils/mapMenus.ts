@@ -115,4 +115,27 @@ export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
 //   }
 // }
 
+/**
+ * 获取菜单内的第三级权限
+ * @param userMenus 请求的菜单
+ * @returns 返回三级权限数组
+ */
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: string[] = [];
+
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? []);
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission);
+      }
+    }
+  };
+
+  _recurseGetPermission(userMenus);
+
+  return permissions;
+}
+
 export { firstMenu };

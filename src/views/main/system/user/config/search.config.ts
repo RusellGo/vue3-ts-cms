@@ -17,25 +17,32 @@ const searchFormConfig: IForm = {
       placeholder: '输入用户名'
     },
     {
-      field: 'password',
-      type: 'password',
-      label: '密码',
+      field: 'realname',
+      type: 'input',
+      label: '真实姓名',
       rules: [],
-      placeholder: '输入密码'
+      placeholder: '请输入真实姓名'
     },
     {
-      field: 'choice',
-      type: 'select',
-      label: '选择',
+      field: 'cellphone',
+      type: 'input',
+      label: '电话号码',
       rules: [],
-      placeholder: '选择一项',
+      placeholder: '请输入电话号码'
+    },
+    {
+      field: 'enable',
+      type: 'select',
+      label: '用户状态',
+      rules: [],
+      placeholder: '选择用户状态',
       options: [
-        { label: 'vn', value: 'vn' },
-        { label: 'kaisa', value: 'kaisa' }
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 }
       ]
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       type: 'datepicker',
       label: '创建时间',
       rules: [],

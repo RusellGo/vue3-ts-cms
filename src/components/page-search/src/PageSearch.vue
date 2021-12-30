@@ -13,7 +13,12 @@
           >
             重置
           </el-button>
-          <el-button type="primary" icon="el-icon-search" size="small">
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            size="small"
+            @click="handleQueryClick"
+          >
             搜索
           </el-button>
         </div>
@@ -38,7 +43,8 @@ export default defineComponent({
   components: {
     RuForm
   },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBtnClick'], // 通过父组件来间接调用兄弟组件的网络请求事件
+  setup(props, context) {
     // 双向绑定的数据应该由配置文件中的 field 属性决定
     // 优化一：表单双向绑定根据配置文件决定
     const formItems = props.searchFormConfig?.formItems ?? [];
@@ -48,15 +54,23 @@ export default defineComponent({
     }
     const formData = ref(formOriginData);
 
-    // 数据重置
+    // 优化二：当用户点击重置按钮
     const handleResetClick = () => {
-      formData.value = formOriginData;
-      console.log(formData.value);
+      for (const key in formOriginData) {
+        formData.value[`${key}`] = formOriginData[key];
+      }
+      context.emit('resetBtnClick');
+    };
+
+    // 优化三：当用户点击搜索
+    const handleQueryClick = () => {
+      context.emit('queryBtnClick', formData.value);
     };
 
     return {
       formData,
-      handleResetClick
+      handleResetClick,
+      handleQueryClick
     };
   }
 });
