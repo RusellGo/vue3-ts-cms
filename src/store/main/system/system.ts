@@ -2,7 +2,12 @@ import { Module } from 'vuex';
 import type { ISystemState } from './types';
 import type { IRootState } from '@/store/types';
 
-import { getPageListData } from '@/service/main/system/system';
+import {
+  getPageListData,
+  deletePageData,
+  createPageData,
+  editPageData
+} from '@/service/main/system/system';
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -95,7 +100,6 @@ const systemModule: Module<ISystemState, IRootState> = {
       }
 
       const pageRuselt = await getPageListData(pageUrl, payload.queryInfo);
-      console.log(pageRuselt);
       const { list, totalCount } = pageRuselt.data;
       switch (pageName) {
         case 'users':
@@ -115,6 +119,52 @@ const systemModule: Module<ISystemState, IRootState> = {
           context.commit('changeMenuCount', totalCount);
           break;
       }
+    },
+
+    async deletePageDataAction(context, payload: any) {
+      // 1.获取pageName和id
+      const { pageName, id } = payload;
+      const pageUrl = `/${pageName}/${id}`;
+
+      // 2.调用删除网络请求
+      await deletePageData(pageUrl);
+
+      // 3.重新请求最新的数据
+      context.dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      });
+    },
+
+    async createPageDataAction(context, playload: any) {
+      const { pageName, newData } = playload;
+      const pageUrl = `/${pageName}`;
+      await createPageData(pageUrl, newData);
+
+      context.dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      });
+    },
+
+    async editPageDataAction(context, playload: any) {
+      const { pageName, editData, id } = playload;
+      const pageUrl = `/${pageName}/${id}`;
+      await editPageData(pageUrl, editData);
+
+      context.dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      });
     }
   },
   modules: {}

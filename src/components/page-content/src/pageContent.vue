@@ -8,8 +8,13 @@
     >
       <!-- header插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="small">
-          新建用户
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="small"
+          @click="handleNewClick"
+        >
+          <slot name="headerTitle">新建</slot>
         </el-button>
       </template>
 
@@ -18,9 +23,9 @@
         <el-button
           plain
           size="mini"
-          :type="scope.row.status ? 'success' : 'danger'"
+          :type="scope.row.enable ? 'success' : 'danger'"
         >
-          {{ scope.row.status ? '启用' : '禁用' }}
+          {{ scope.row.enable ? '启用' : '禁用' }}
         </el-button>
       </template>
       <template v-slot:createAt="scope">
@@ -29,13 +34,14 @@
       <template v-slot:updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handler-btns">
           <el-button
             v-if="isUpdate"
             type="text"
             size="mini"
             icon="el-icon-edit"
+            @click="handleEditClick(scope.row)"
           >
             编辑
           </el-button>
@@ -44,6 +50,7 @@
             type="text"
             size="mini"
             icon="el-icon-delete"
+            @click="handleDeleteClick(scope.row)"
           >
             删除
           </el-button>
@@ -88,7 +95,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, context) {
     const store = useStore();
 
     // 获取操作权限
@@ -137,6 +145,22 @@ export default defineComponent({
       }
     );
 
+    // 删除/编辑/新建 操作
+    const handleDeleteClick = (item: any) => {
+      store.dispatch('systemModule/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      });
+    };
+
+    const handleNewClick = () => {
+      context.emit('newBtnClick');
+    };
+
+    const handleEditClick = (item: any) => {
+      context.emit('editBtnClick', item);
+    };
+
     return {
       listData,
       dataCount,
@@ -145,7 +169,10 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     };
   }
 });
