@@ -14,7 +14,7 @@
           size="small"
           @click="handleNewClick"
         >
-          <slot name="headerTitle">新建</slot>
+          <slot name="headerBtnTitle">新建</slot>
         </el-button>
       </template>
 

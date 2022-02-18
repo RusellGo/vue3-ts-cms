@@ -62,6 +62,9 @@ const loginModule: Module<ILoginState, IRootState> = {
       context.commit('changeToken', token);
       localCache.setCache('token', token);
 
+      // 1.1 发送初始化的请求
+      context.dispatch('getInitialDataAction', null, { root: true });
+
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id);
       const userInfo = userInfoResult.data;
@@ -88,6 +91,9 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       if (token) {
         context.commit('changeToken', token);
+
+        // 1.1 发送初始化的请求
+        context.dispatch('getInitialDataAction', null, { root: true });
       }
       if (userInfo) {
         context.commit('changeUserInfo', userInfo);

@@ -24,7 +24,7 @@
             </el-icon>
             系统管理
           </el-dropdown-item>
-          <el-dropdown-item divided>
+          <el-dropdown-item divided @click="handleExitClick">
             <el-icon :size="16" style="vertical-align: middle">
               <circle-close />
             </el-icon>
@@ -39,6 +39,8 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from '@/store';
+import { useRouter } from 'vue-router';
+import localCache from '@/utils/cache';
 
 import { User, Setting, CircleClose } from '@element-plus/icons';
 
@@ -55,9 +57,17 @@ export default defineComponent({
     const headPortrait =
       'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 
+    // 退出登录
+    const router = useRouter();
+    const handleExitClick = () => {
+      localCache.deleteCache('token');
+      router.push('/main');
+    };
+
     return {
       userName,
-      headPortrait
+      headPortrait,
+      handleExitClick
     };
   }
 });

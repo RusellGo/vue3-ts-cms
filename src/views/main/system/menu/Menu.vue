@@ -3,7 +3,11 @@
     <page-content
       :contentTableConfig="contentTableConfig"
       pageName="menu"
-    ></page-content>
+      @newBtnClick="handleNewData"
+      @editBtnClick="handleEditData"
+    >
+      <template #headerBtnTitle>新建菜单</template>
+    </page-content>
   </div>
 </template>
 

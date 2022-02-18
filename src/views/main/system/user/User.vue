@@ -16,7 +16,7 @@
         @newBtnClick="handleNewData"
         @editBtnClick="handleEditData"
       >
-        <template v-slot:headerTitle>新建数据</template>
+        <template v-slot:headerBtnTitle>新建用户</template>
       </page-content>
     </div>
 
