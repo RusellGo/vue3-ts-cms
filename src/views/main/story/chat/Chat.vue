@@ -1,14 +1,23 @@
 <template>
-  <div>Chat</div>
+  <div class="chat">
+    <ru-editor v-model:value="htmlString" />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import RuEditor from '@/base-ui/editor';
 
 export default defineComponent({
-  name: 'Chat',
+  name: 'chat',
+  components: {
+    RuEditor
+  },
   setup() {
-    return {};
+    const htmlString = ref<string>('coderwhy');
+    return {
+      htmlString
+    };
   }
 });
 </script>

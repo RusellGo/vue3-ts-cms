@@ -1,11 +1,6 @@
 <template>
   <div class="menu">
-    <page-content
-      :contentTableConfig="contentTableConfig"
-      pageName="menu"
-      @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
-    >
+    <page-content :contentTableConfig="contentTableConfig" pageName="menu">
       <template #headerBtnTitle>新建菜单</template>
     </page-content>
   </div>

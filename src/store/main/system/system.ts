@@ -20,7 +20,13 @@ const systemModule: Module<ISystemState, IRootState> = {
       goodList: [],
       goodCount: 0,
       menuList: [],
-      menuCount: 0
+      menuCount: 0,
+      departmentList: [],
+      departmentCount: 0,
+      categoryList: [],
+      categoryCount: 0,
+      storyList: [],
+      storyCount: 0
     };
   },
   getters: {
@@ -35,6 +41,12 @@ const systemModule: Module<ISystemState, IRootState> = {
             return state.goodList;
           case 'menu':
             return state.menuList;
+          case 'department':
+            return state.departmentList;
+          case 'category':
+            return state.categoryList;
+          case 'story':
+            return state.storyList;
         }
       };
     },
@@ -49,6 +61,12 @@ const systemModule: Module<ISystemState, IRootState> = {
             return state.goodCount;
           case 'menu':
             return state.menuCount;
+          case 'department':
+            return state.departmentCount;
+          case 'category':
+            return state.categoryCount;
+          case 'story':
+            return state.storyCount;
         }
       };
     }
@@ -77,6 +95,24 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeMenuCount(state, menuCount: number) {
       state.menuCount = menuCount;
+    },
+    changeDepartmentList(state, departmentList: any[]) {
+      state.departmentList = departmentList;
+    },
+    changeDepartmentCount(state, departmentCount: number) {
+      state.departmentCount = departmentCount;
+    },
+    changeCategoryList(state, categoryList: any[]) {
+      state.categoryList = categoryList;
+    },
+    changeCategoryCount(state, categoryCount: number) {
+      state.categoryCount = categoryCount;
+    },
+    changeStoryList(state, storyList: any[]) {
+      state.storyList = storyList;
+    },
+    changeStoryCount(state, storyCount: number) {
+      state.storyCount = storyCount;
     }
   },
   actions: {
@@ -97,10 +133,19 @@ const systemModule: Module<ISystemState, IRootState> = {
         case 'menu':
           pageUrl = `/menu/list`;
           break;
+        case 'department':
+          pageUrl = `/department/list`;
+          break;
+        case 'category':
+          pageUrl = `/category/list`;
+          break;
+        case 'story':
+          pageUrl = `/story/list`;
+          break;
       }
 
-      const pageRuselt = await getPageListData(pageUrl, payload.queryInfo);
-      const { list, totalCount } = pageRuselt.data;
+      const pageResult = await getPageListData(pageUrl, payload.queryInfo);
+      const { list, totalCount } = pageResult.data;
       switch (pageName) {
         case 'users':
           context.commit('changeUserList', list);
@@ -117,6 +162,18 @@ const systemModule: Module<ISystemState, IRootState> = {
         case 'menu':
           context.commit('changeMenuList', list);
           context.commit('changeMenuCount', totalCount);
+          break;
+        case 'department':
+          context.commit('changeDepartmentList', list);
+          context.commit('changeDepartmentCount', totalCount);
+          break;
+        case 'category':
+          context.commit('changeCategoryList', list);
+          context.commit('changeCategoryCount', totalCount);
+          break;
+        case 'story':
+          context.commit('changeStoryList', list);
+          context.commit('changeStoryCount', totalCount);
           break;
       }
     },

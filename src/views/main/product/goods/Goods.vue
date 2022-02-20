@@ -2,6 +2,7 @@
   <div class="goods">
     <div class="content">
       <page-content :contentTableConfig="contentTableConfig" pageName="goods">
+        <template #headerBtnTitle>新建商品</template>
         <template v-slot:image="scope">
           <el-image
             style="width: 30px"
