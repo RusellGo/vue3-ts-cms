@@ -1,7 +1,6 @@
 <template>
   <div class="map-echart" :fakeData="option">
     <!-- 地图有问题 -->
-    <!-- <base-echart :options="option"></base-echart> -->
   </div>
 </template>
 
