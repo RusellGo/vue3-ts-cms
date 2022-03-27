@@ -1,61 +1,126 @@
 <template>
-  <div>
-    <div ref="domRef" :style="{ width: '600px', height: '400px' }"></div>
+  <div class="dashboard">
+    <el-row :gutter="10">
+      <el-col :span="7">
+        <ru-card title="分类商品数量（饼图）">
+          <pie-echart :pieData="categoryGoodsCount"></pie-echart>
+        </ru-card>
+      </el-col>
+      <el-col :span="10">
+        <ru-card title="不同城市商品销量">
+          <map-echart :mapData="addressGoodsSale"></map-echart>
+        </ru-card>
+      </el-col>
+      <el-col :span="7">
+        <ru-card title="分类商品数量（玫瑰图）">
+          <rose-echart :roseData="categoryGoodsCount"></rose-echart>
+        </ru-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="10" class="content-row">
+      <el-col :span="12">
+        <ru-card title="分类商品的销量">
+          <line-echart v-bind="categoryGoodsSale"></line-echart>
+        </ru-card>
+      </el-col>
+      <el-col :span="12">
+        <ru-card title="分类商品的收藏">
+          <bar-echart v-bind="categoryGoodsFavor"></bar-echart>
+        </ru-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from '@/store/index';
 
-import * as echarts from 'echarts';
+import RuCard from '@/base-ui/card';
+import {
+  PieEchart,
+  RoseEchart,
+  LineEchart,
+  BarEchart,
+  MapEchart
+} from '@/components/page-echarts/index';
 
 export default defineComponent({
   name: 'Dashboard',
+  components: {
+    RuCard,
+    PieEchart,
+    RoseEchart,
+    LineEchart,
+    BarEchart,
+    MapEchart
+  },
   setup() {
-    // echearts的绘制位置
-    const domRef = ref<HTMLElement>();
-    onMounted(() => {
-      // 1.创建echarts的实例
-      // - canvas更适合绘制图形元素数量非常大的图表（一般是由于数据量大），也利于实现某些视觉特效
-      // - svg在不少场景中具有重要优势，它的内存占用更低（这对移动端尤其重要），渲染性能略高，使用浏览器内置的缩放功能时不会模糊
-      const echartsInstance = echarts.init(domRef.value!, 'light', {
-        renderer: 'svg'
+    const store = useStore();
+    store.dispatch('dashboardModule/getDashboardDataAction');
+
+    // 1.获取分类商品数据（饼图、玫瑰图）
+    const categoryGoodsCount = computed(() => {
+      // 简单处理一下数据格式
+      return store.state.dashboardModule.categoryGoodsCount.map((item) => {
+        return { value: item.goodsCount, name: item.name };
       });
-      // 2.编写配置文件
-      const options = {
-        title: {
-          text: 'ECharts 入门示例'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            // type: 'shadow'
-            type: 'cross'
-          }
-        },
-        legend: {
-          data: ['销量']
-        },
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [
-          {
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-          }
-        ]
-      };
-      // 3.设置配置，并且开始绘制
-      echartsInstance.setOption(options);
     });
+
+    // 2.获取分类商品销量数据
+    const categoryGoodsSale = computed(() => {
+      const xLabels: string[] = [];
+      const value: any[] = [];
+
+      const SaleData = store.state.dashboardModule.categoryGoodsSale;
+      for (const item of SaleData) {
+        xLabels.push(item.name);
+        value.push(item.goodsCount);
+      }
+
+      return {
+        xLabels,
+        value
+      };
+    });
+
+    // 3.获取分类商品收藏数据
+    const categoryGoodsFavor = computed(() => {
+      const xLabels: string[] = [];
+      const value: any[] = [];
+
+      const FavorData = store.state.dashboardModule.categoryGoodsFavor;
+      for (const item of FavorData) {
+        xLabels.push(item.name);
+        value.push(item.goodsFavor);
+      }
+
+      return {
+        xLabels,
+        value
+      };
+    });
+
+    // 4.获取不同城市销量
+    const addressGoodsSale = computed(() => {
+      return store.state.dashboardModule.addressGoodsSale.map((item: any) => {
+        return { name: item.address, value: item.count };
+      });
+    });
+
     return {
-      domRef
+      categoryGoodsCount,
+      categoryGoodsSale,
+      categoryGoodsFavor,
+      addressGoodsSale
     };
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-row {
+  margin-top: 20px;
+}
+</style>

@@ -4,7 +4,7 @@ import { IBreadcrumb } from '@/base-ui/breadcrumb';
 let firstMenu: any = null;
 
 /**
- * 根据请求的用户菜单，映射对应的路由
+ * 根据请求的用户菜单，映射对应的所有本地路由
  * @param userMenus 请求的用户菜单
  * @returns 菜单对应的路由对象数组
  */
