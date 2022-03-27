@@ -1,5 +1,5 @@
 <template>
-  <div class="map-echart">
+  <div class="map-echart" :fakeData="option">
     <!-- 地图有问题 -->
     <!-- <base-echart :options="option"></base-echart> -->
   </div>
@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
-import BaseEchart from '@/base-ui/echart/index';
+// import BaseEchart from '@/base-ui/echart/index';
 import type { IDataType } from '../types/types';
 
 import { convertData } from '../utils/convert-data';
